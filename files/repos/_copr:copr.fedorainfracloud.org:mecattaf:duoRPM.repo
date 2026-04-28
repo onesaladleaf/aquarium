@@ -1,0 +1,10 @@
+[copr:copr.fedorainfracloud.org:mecattaf:duoRPM]
+name=Copr repo for duoRPM owned by mecattaf
+baseurl=https://download.copr.fedorainfracloud.org/results/mecattaf/duoRPM/fedora-$releasever-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/mecattaf/duoRPM/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1

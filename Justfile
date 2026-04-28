@@ -15,6 +15,7 @@ build *ARGS:
     sudo buildah bud \
         --layers=true \
         --arch="{{arch}}" \
+        --build-arg="base={{base}}" \
         {{ARGS}} \
         -t "{{registry}}/{{name}}:{{tag}}{{rechunk_suffix}}" \
         "."
