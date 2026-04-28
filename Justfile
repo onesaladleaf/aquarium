@@ -11,6 +11,10 @@ base := env("BUILD_BASE", "quay.io/shadowblue/base:" + branch)
 rechunk_suffix := env("BUILD_RECHUNK_SUFFIX", "-build")
 arch := env("BUILD_ARCH", "amd64")
 
+pull *ARGS:
+    sudo podman pull {{base}}
+    sudo podman pull {{registry}}/{{name}}:{{tag}} || true
+
 build *ARGS:
     sudo buildah bud \
         --layers=true \
