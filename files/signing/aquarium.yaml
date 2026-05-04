@@ -1,0 +1,3 @@
+docker:
+  quay.io/onesaladleaf:
+    use-sigstore-attachments: true
