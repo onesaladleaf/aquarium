@@ -23,16 +23,17 @@ jobs:
       - name: Pull
         id: pull
         run: |
-          just pull
+          sudo $(which just) pull
 
       - name: Build
         id: build
-        run: just build
+        run: |
+          sudo $(which just) build
 
       - name: Rechunk
         id: rechunk
         run: |
-          just rechunk
+          sudo $(which just) rechunk
 
       - name: Login to registry
         env:
