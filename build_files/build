@@ -17,6 +17,7 @@ dnf -y install \
     virt-manager
 
 dnf -y install \
+    fish \
     eza \
     fastfetch \
     neovim \
