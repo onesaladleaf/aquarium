@@ -34,4 +34,4 @@ rechunk *ARGS:
             --output=containers-storage:{{registry}}/{{name}}:{{tag}}
 
 sign digest:
-    cosign sign -y --new-bundle-format=false --key env://SIGNING_KEY "{{registry}}/{{name}}@{{digest}}"
+    cosign sign -y --new-bundle-format=false --use-signing-config=false --key env://SIGNING_KEY "{{registry}}/{{name}}@{{digest}}"
