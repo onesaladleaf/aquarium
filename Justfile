@@ -12,11 +12,11 @@ rechunk_suffix := env("BUILD_RECHUNK_SUFFIX", "-build")
 arch := env("BUILD_ARCH", "amd64")
 
 pull *ARGS:
-    podman pull {{base}}
-    podman pull {{registry}}/{{name}}:{{tag}} || true
+    sudo podman pull {{base}}
+    sudo npodman pull {{registry}}/{{name}}:{{tag}} || true
 
 build *ARGS:
-    buildah bud \
+    sudo buildah bud \
         --layers=true \
         --arch="{{arch}}" \
         --build-arg="base={{base}}" \
@@ -25,7 +25,7 @@ build *ARGS:
         "."
 
 rechunk *ARGS:
-    podman run --rm --privileged -v /var/lib/containers:/var/lib/containers {{ARGS}} \
+    sudo podman run --rm --privileged -v /var/lib/containers:/var/lib/containers {{ARGS}} \
         {{base}} \
         rpm-ostree experimental compose build-chunked-oci \
             --bootc \

@@ -22,15 +22,15 @@ jobs:
 
       - name: Pull
         id: pull
-        run: sudo $(which just) pull
+        run: just pull
 
       - name: Build
         id: build
-        run: sudo $(which just) build
+        run: just build
 
       - name: Rechunk
         id: rechunk
-        run: sudo $(which just) rechunk
+        run: just rechunk
 
       - name: Login to registry
         env:
@@ -76,5 +76,5 @@ jobs:
       - name: Sign with cosign
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-        run: sudo $(which just) sign "${{ steps.push.outputs.digest }}"
+        run: just sign "${{ steps.push.outputs.digest }}"
 
