@@ -32,3 +32,6 @@ rechunk *ARGS:
             --format-version=1 \
             --from={{registry}}/{{name}}:{{tag}}{{rechunk_suffix}} \
             --output=containers-storage:{{registry}}/{{name}}:{{tag}}
+
+sign digest:
+    cosign sign -y --new-bundle-format=false --key env://SIGNING_KEY "{{registry}}/{{name}}@{{digest}}"
