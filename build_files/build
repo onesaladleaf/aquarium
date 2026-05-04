@@ -40,6 +40,6 @@ dnf -y install \
 dnf -y install just bcvk podman buildah
 
 dnf -y install gcc make
-dnf -y install kernel-devel-$(uname -r)
+dnf -y install kernel-devel-$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
 dnf -y install yggdrasil
