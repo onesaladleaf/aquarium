@@ -22,18 +22,15 @@ jobs:
 
       - name: Pull
         id: pull
-        run: |
-          sudo $(which just) pull
+        run: sudo $(which just) pull
 
       - name: Build
         id: build
-        run: |
-          sudo $(which just) build
+        run: sudo $(which just) build
 
       - name: Rechunk
         id: rechunk
-        run: |
-          sudo $(which just) rechunk
+        run: sudo $(which just) rechunk
 
       - name: Login to registry
         env:
@@ -41,6 +38,7 @@ jobs:
           USER: ${{ secrets.REGISTRY_USER }}
         run: |
           echo "${TOKEN}" | sudo podman login -u "${USER}" --password-stdin "${BUILD_REGISTRY}"
+          echo "${TOKEN}" | docker login -u "${USER}" --password-stdin "${BUILD_REGISTRY}" # for cosign
 
       # TODO: remove me when we have a new podman in 26.04 runners
       # needed because old podman doesn't push layer annotations for
@@ -49,21 +47,26 @@ jobs:
         run: |
           /home/linuxbrew/.linuxbrew/bin/brew install podman
 
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v4.1.1
+
       - name: Push to registry
         id: push
         env:
           REGISTRY: ${{ env.BUILD_REGISTRY }}
           IMAGE: ${{ env.BUILD_NAME }}
           TAG: ${{ env.BUILD_TAG }}
-          MAX_RETRIES: 3
         run: |
           set -x
           # HACK: push a second time so layer annotations are present
           # TODO: remove me when https://github.com/containers/podman/issues/27796 fixed
-          for i in $(seq "${MAX_RETRIES}"); do
-            sudo /home/linuxbrew/.linuxbrew/bin/podman push "$REGISTRY/$IMAGE:$TAG" && break || sleep $((5 * i));
-          done
+          sudo /home/linuxbrew/.linuxbrew/bin/podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
+          sudo /home/linuxbrew/.linuxbrew/bin/podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
 
-          for i in $(seq "${MAX_RETRIES}"); do
-            sudo /home/linuxbrew/.linuxbrew/bin/podman push "$REGISTRY/$IMAGE:$TAG" && break || sleep $((5 * i));
-          done
+      - name: Sign with cosign
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: sudo $(which just) sign "${{ steps.push.outputs.digest }}"
+
