@@ -54,16 +54,21 @@ dnf -y install nvme-cli smartmontools
 # Dev tools
 dnf -y install just bcvk podman buildah
 
-dnf -y install ffmpeg ffmpegthumbnailer mesa-va-drivers-freeworld
-dnf -y remove \
-    libavcodec-free \
-    libavdevice-free \
-    libavfilter-free \
-    libavformat-free \
-    libavutil-free \
-    libswresample-free \
-    libswscale-free \
-    ffmpeg-free
+# Use ffmpeg from RPMFusion
+dnf do \
+    --action=remove \
+        libavcodec-free \
+        libavdevice-free \
+        libavfilter-free \
+        libavformat-free \
+        libavutil-free \
+        libswresample-free \
+        libswscale-free \
+        ffmpeg-free \
+    --action=install \
+        ffmpeg \
+        ffmpegthumbnailer \
+        mesa-va-drivers-freeworld
 
 # For building kernel modules
 dnf -y install gcc make
