@@ -4,26 +4,35 @@ set -uexo pipefail
 
 sed -i 's|#LockLayering.*|LockLayering=true|' /etc/rpm-ostreed.conf
 
+# Disable auto updates
 systemctl disable bootc-fetch-apply-updates.timer
 systemctl mask bootc-fetch-apply-updates.timer
 systemctl disable rpm-ostreed-automatic.timer
 systemctl mask rpm-ostreed-automatic.timer
 
+# Close everything by default
 sed -i 's|DefaultZone=.*|DefaultZone=public|' /etc/firewalld/firewalld.conf
 
+# RPMFusion
+dnf -y install "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
+
+# GUI apps
 dnf -y install \
     alacritty \
     gnome-system-monitor \
     virt-manager
 
+# Useful cli tools
 dnf -y install \
     fish \
     eza \
     fastfetch \
     neovim \
     tmux \
-    vim
+    vim \
+    NetworkManager-tui
 
+# Desktop shell stuff
 dnf -y install \
     niri \
     fuzzel \
@@ -38,9 +47,31 @@ dnf -y install \
     wl-kbptr \
     xwayland-satellite
 
+dnf -y install adw-gtk3-theme
+
+dnf -y install nvme-cli smartmontools
+
+# Dev tools
 dnf -y install just bcvk podman buildah
 
+dnf -y install ffmpeg ffmpegthumbnailer mesa-va-drivers-freeworld
+dnf -y remove \
+    libavcodec-free \
+    libavdevice-free \
+    libavfilter-free \
+    libavformat-free \
+    libavutil-free \
+    libswresample-free \
+    libswscale-free \
+    ffmpeg-free
+
+# For building kernel modules
 dnf -y install gcc make
 dnf -y install kernel-devel-$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
 dnf -y install yggdrasil
+
+# Flatpak Firefox is used instead
+dnf -y remove firefox firefox-langpacks
+
+dnf -y remove gnome-software-rpm-ostree
