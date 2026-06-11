@@ -11,6 +11,7 @@ FROM $base
 
 COPY cosign.pub /etc/pki/containers/aquarium.pub
 COPY files/etc/ /etc/
+COPY files/usr/ /usr/
 
 RUN --mount=type=bind,from=ctx,source=/build_files,target=/ctx \
     --mount=type=cache,target=/var/cache \
