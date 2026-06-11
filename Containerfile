@@ -9,8 +9,6 @@ COPY build_files /build_files
 
 FROM $base
 
-COPY --chmod=644 files/repos/*.repo /etc/yum.repos.d/
-
 COPY cosign.pub /etc/pki/containers/aquarium.pub
 COPY files/etc/ /etc/
 
