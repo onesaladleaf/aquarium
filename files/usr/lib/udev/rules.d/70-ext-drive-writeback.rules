@@ -1,0 +1,2 @@
+ACTION=="add|change", KERNEL=="sd[a-z]*", SUBSYSTEM=="block", ATTRS{speed}=="[0-9]*", ENV{ID_USB_TYPE}=="disk", ATTRS{bDeviceClass}!="09", RUN+="/usr/bin/ext-drive-writeback $kernel $attr{speed}"
+ACTION=="add|change", KERNEL=="mmcblk[0-9]*", SUBSYSTEM=="block", ATTRS{type}=="SD", RUN+="/usr/bin/ext-drive-writeback $kernel 480"
