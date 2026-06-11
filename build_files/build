@@ -55,7 +55,7 @@ dnf -y install nvme-cli smartmontools
 dnf -y install just bcvk podman buildah
 
 # Use ffmpeg from RPMFusion
-dnf do \
+dnf -y do \
     --action=remove \
         libavcodec-free \
         libavdevice-free \
