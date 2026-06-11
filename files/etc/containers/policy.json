@@ -29,15 +29,6 @@
                     }
                 }
             ],
-            "quay.io/shadowblue/base": [
-                {
-                    "type": "sigstoreSigned",
-                    "keyPath": "/etc/pki/containers/base.pub",
-                    "signedIdentity": {
-                        "type": "matchRepository"
-                    }
-                }
-            ],
             "": [
                 {
                     "type": "insecureAcceptAnything"

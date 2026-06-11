@@ -6,7 +6,7 @@ tag := env("BUILD_TAG", branch)
 registry := env("BUILD_REGISTRY", "localhost")
 name := env("BUILD_IMAGE", "aquarium")
 
-base := env("BUILD_BASE", "quay.io/shadowblue/base:" + branch)
+base := env("BUILD_BASE", "quay.io/fedora/fedora-silverblue:" + branch)
 
 rechunk_suffix := env("BUILD_RECHUNK_SUFFIX", "-build")
 arch := env("BUILD_ARCH", "amd64")
