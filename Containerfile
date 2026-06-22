@@ -4,6 +4,7 @@ ARG base
 
 FROM scratch AS ctx
 COPY build_files /build_files
+COPY modules /modules
 
 # Image
 

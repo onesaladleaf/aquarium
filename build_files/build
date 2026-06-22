@@ -16,6 +16,9 @@ sed -i 's|DefaultZone=.*|DefaultZone=public|' /etc/firewalld/firewalld.conf
 # RPMFusion
 dnf -y install "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
 
+# modules
+env --chdir=/ctx/modules/disconnect-lock ./build
+
 # GUI apps
 dnf -y install \
     alacritty \

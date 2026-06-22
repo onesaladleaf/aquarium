@@ -1,0 +1,1 @@
+ATTRS{idVendor}=="13fe", ATTRS{idProduct}=="1d00" ACTION=="remove" RUN+="/usr/bin/disconnect-lock.sh"

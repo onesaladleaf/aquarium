@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+install -m644 10-disconnect-lock.rules /usr/lib/udev/rules.d/10-disconnect-lock.rules
+install -m755 disconnect-lock.sh /usr/bin/disconnect-lock.sh
