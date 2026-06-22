@@ -14,10 +14,10 @@ COPY cosign.pub /etc/pki/containers/aquarium.pub
 COPY files/etc/ /etc/
 COPY files/usr/ /usr/
 
-RUN --mount=type=bind,from=ctx,source=/build_files,target=/ctx \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,target=/var/cache \
-    /ctx/build && \
-    /ctx/cleanup && \
-    /ctx/finalize
+    /ctx/build_files/build && \
+    /ctx/build_files/cleanup && \
+    /ctx/build_files/finalize
 
 RUN bootc container lint --no-truncate
