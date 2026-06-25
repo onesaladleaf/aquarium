@@ -85,4 +85,7 @@ dnf -y remove firefox firefox-langpacks
 dnf -y remove gnome-software-rpm-ostree
 
 dnf -y copr enable teackot/msi
-dnf -y install akmod-acpi_ec mcontrolcenter
+dnf -y install akmod-acpi_ec || true
+KVER="$(rpm -q "kernel" --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
+akmods --force --kernels "${KVER}" --kmod acpi_ec
+dnf -y install mcontrolcenter
