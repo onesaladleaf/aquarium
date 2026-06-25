@@ -83,3 +83,6 @@ dnf -y install yggdrasil
 dnf -y remove firefox firefox-langpacks
 
 dnf -y remove gnome-software-rpm-ostree
+
+dnf -y copr enable teackot/msi
+dnf -y install akmod-acpi_ec mcontrolcenter
