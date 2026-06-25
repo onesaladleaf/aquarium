@@ -71,6 +71,8 @@ jobs:
           TAG: ${{ env.BUILD_TAG }}
         run: |
           set -x
+
+          /home/linuxbrew/.linuxbrew/bin/podman system migrate
           # HACK: push a second time so layer annotations are present
           # TODO: remove me when https://github.com/containers/podman/issues/27796 fixed
           sudo /home/linuxbrew/.linuxbrew/bin/podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
