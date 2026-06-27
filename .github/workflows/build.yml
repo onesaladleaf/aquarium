@@ -17,7 +17,7 @@ jobs:
       BUILD_TAG: 44
 
     steps:
-      - parallel:
+      parallel:
         # required until updated runners are rolled out
         - name: Fix podman
           shell: bash
