@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       packages: write
 
@@ -17,6 +17,14 @@ jobs:
       BUILD_TAG: 44
 
     steps:
+      # required until updated runners are rolled out
+      - name: Fix podman
+        shell: bash
+        run: |
+          sudo mkdir -p /etc/containers/containers.conf.d
+          printf '[network]\nfirewall_driver = "iptables"\n' | sudo tee /etc/containers/containers.conf.d/99-fix-firewall.conf
+          sudo podman network reload --all 2>/dev/null
+
       - name: Maximize build space
         uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
         with:
@@ -45,21 +53,6 @@ jobs:
           echo "${TOKEN}" | sudo podman login -u "${USER}" --password-stdin "${BUILD_REGISTRY}"
           echo "${TOKEN}" | docker login -u "${USER}" --password-stdin "${BUILD_REGISTRY}" # for cosign
 
-      # This produces some warinigs which can be ignored
-      - name: Enable cache for brew
-        uses: actions/cache@v5
-        id: brew-cache
-        with:
-          path: /home/linuxbrew
-          key: brew
-
-      # TODO: remove me when we have a new podman in 26.04 runners
-      # needed because old podman doesn't push layer annotations for
-      # the rpm-ostree rechunker at all
-      - name: Install Podman from Brew
-        run: |
-          /home/linuxbrew/.linuxbrew/bin/brew install podman
-
       - name: Install Cosign
         uses: sigstore/cosign-installer@v4.1.1
 
@@ -73,9 +66,9 @@ jobs:
           set -x
           # HACK: push a second time so layer annotations are present
           # TODO: remove me when https://github.com/containers/podman/issues/27796 fixed
-          sudo /home/linuxbrew/.linuxbrew/bin/podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          sudo podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
           echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
-          sudo /home/linuxbrew/.linuxbrew/bin/podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          sudo podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
           echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
 
       - name: Sign with cosign
