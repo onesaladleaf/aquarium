@@ -50,6 +50,9 @@ dnf -y install \
     wl-kbptr \
     xwayland-satellite
 
+# needed to fix steam??
+dnf -y install dbus-tools
+
 dnf -y install adw-gtk3-theme
 
 dnf -y install nvme-cli smartmontools
