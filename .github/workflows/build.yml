@@ -17,21 +17,23 @@ jobs:
       BUILD_TAG: 44
 
     steps:
-      # required until updated runners are rolled out
-      - name: Fix podman
-        shell: bash
-        run: |
-          sudo mkdir -p /etc/containers/containers.conf.d
-          printf '[network]\nfirewall_driver = "iptables"\n' | sudo tee /etc/containers/containers.conf.d/99-fix-firewall.conf
-          sudo podman network reload --all 2>/dev/null
+      parallel:
+        # required until updated runners are rolled out
+        - name: Fix podman
+          shell: bash
+          run: |
+            sudo mkdir -p /etc/containers/containers.conf.d
+            printf '[network]\nfirewall_driver = "iptables"\n' | sudo tee /etc/containers/containers.conf.d/99-fix-firewall.conf
+            sudo podman network reload --all 2>/dev/null
 
-      - name: Maximize build space
-        uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
-        with:
-          extra-squeeze: true
+        - name: Maximize build space
+          uses: ublue-os/remove-unwanted-software@695eb75bc387dbcd9685a8e72d23439d8686cba6
+          with:
+            extra-squeeze: true
 
-      - uses: actions/checkout@v6
-      - uses: extractions/setup-just@v4
+        - uses: actions/checkout@v6
+
+        - uses: extractions/setup-just@v4
 
       - name: Pull
         id: pull
@@ -75,4 +77,3 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         run: just sign "${{ steps.push.outputs.digest }}"
-
