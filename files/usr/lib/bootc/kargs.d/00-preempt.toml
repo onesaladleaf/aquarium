@@ -1,1 +1,1 @@
-args = ["preempt=full"]
+kargs = ["preempt=full"]
