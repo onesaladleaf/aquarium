@@ -14,6 +14,7 @@ arch := env("BUILD_ARCH", "amd64")
 pull *ARGS:
     podman pull {{base}}
     podman pull quay.io/coreos/chunkah
+    podman pull {{registry}}/{{name}}:44
     podman pull {{registry}}/{{name}}:{{tag}} || true
 
 build *ARGS:
@@ -22,6 +23,7 @@ build *ARGS:
         --skip-unused-stages=false \
         --arch="{{arch}}" \
         --build-arg="base={{base}}" \
+        --build-arg="CHUNKAH_CONFIG_STR=$(podman inspect {{registry}}/{{name}}:44)" \
         {{ARGS}} \
         -t "{{registry}}/{{name}}:{{tag}}" \
         "."

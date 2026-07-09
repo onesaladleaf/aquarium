@@ -1,5 +1,5 @@
 ARG base
-# ARG CHUNKAH_CONFIG_STR
+ARG CHUNKAH_CONFIG_STR
 
 # Context
 
@@ -26,7 +26,7 @@ RUN bootc container lint --no-truncate
 # Chunkah
 
 FROM quay.io/coreos/chunkah AS chunkah
-# ARG CHUNKAH_CONFIG_STR
+ARG CHUNKAH_CONFIG_STR
 RUN --mount=type=bind,target=/run/src,rw \
     --mount=from=builder,target=/chunkah,ro \
     chunkah build \
@@ -37,7 +37,3 @@ RUN --mount=type=bind,target=/run/src,rw \
         --output oci:/run/src/out
 
 FROM oci:out
-LABEL containers.bootc 1
-ENV container=oci
-STOPSIGNAL SIGRTMIN+3
-CMD ["/sbin/init"]
