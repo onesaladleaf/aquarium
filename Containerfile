@@ -1,5 +1,5 @@
 ARG base
-ARG CHUNKAH_CONFIG_STR
+# ARG CHUNKAH_CONFIG_STR
 
 # Context
 
@@ -26,10 +26,15 @@ RUN bootc container lint --no-truncate
 # Chunkah
 
 FROM quay.io/coreos/chunkah AS chunkah
-ARG CHUNKAH_CONFIG_STR
+# ARG CHUNKAH_CONFIG_STR
 RUN --mount=type=bind,target=/run/src,rw \
     --mount=from=builder,target=/chunkah,ro \
-      chunkah build --max-layers=128 --output oci:/run/src/out
+    chunkah build \
+        --prune /sysroot/ \
+        --label ostree.commit- \
+        --label ostree.final-diffid- \
+        --max-layers=128 \
+        --output oci:/run/src/out
 
 FROM oci:out
 LABEL containers.bootc 1
