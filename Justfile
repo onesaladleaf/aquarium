@@ -26,14 +26,5 @@ build *ARGS:
         -t "{{registry}}/{{name}}:{{tag}}" \
         "."
 
-rechunk *ARGS:
-    sudo podman run --rm --privileged -v /var/lib/containers:/var/lib/containers {{ARGS}} \
-        {{base}} \
-        rpm-ostree experimental compose build-chunked-oci \
-            --bootc \
-            --format-version=1 \
-            --from={{registry}}/{{name}}:{{tag}}{{rechunk_suffix}} \
-            --output=containers-storage:{{registry}}/{{name}}:{{tag}}
-
 sign digest:
     cosign sign -y --new-bundle-format=false --use-signing-config=false --key env://SIGNING_KEY "{{registry}}/{{name}}@{{digest}}"
