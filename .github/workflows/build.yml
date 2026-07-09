@@ -14,7 +14,7 @@ jobs:
       BUILD_REGISTRY: ${{ vars.REGISTRY }}
       BUILD_NAME: aquarium
       BUILD_BRANCH: 44
-      BUILD_TAG: 44
+      BUILD_TAG: 44-chunkah
 
     steps:
       # required until updated runners are rolled out
