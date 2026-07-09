@@ -34,6 +34,8 @@ build *ARGS:
         --arch="{{arch}}" \
         --build-arg="base={{base}}" \
         --build-arg="CHUNKAH_CONFIG_STR=$(podman inspect {{registry}}/{{name}}:44)" \
+        -v=$(pwd):/run/src \
+        --security-opt=label=disable \
         {{ARGS}} \
         -t "{{registry}}/{{name}}:{{tag}}" \
         "."
