@@ -1,4 +1,5 @@
 ARG base
+ARG CHUNKAH_CONFIG_STR
 
 # Context
 
@@ -8,7 +9,7 @@ COPY modules /modules
 
 # Image
 
-FROM $base
+FROM $base as builder
 
 COPY cosign.pub /etc/pki/containers/aquarium.pub
 COPY files/etc/ /etc/
@@ -21,3 +22,17 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/build_files/finalize
 
 RUN bootc container lint --no-truncate
+
+# Chunkah
+
+FROM quay.io/coreos/chunkah AS chunkah
+ARG CHUNKAH_CONFIG_STR
+RUN --mount=type=bind,target=/run/src,rw \
+    --mount=from=builder,target=/chunkah,ro \
+      chunkah build --max-layers=128 --output oci:/run/src/out
+
+FROM oci:out
+LABEL containers.bootc 1
+ENV container=oci
+STOPSIGNAL SIGRTMIN+3
+CMD ["/sbin/init"]
