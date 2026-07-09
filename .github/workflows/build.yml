@@ -46,7 +46,7 @@ jobs:
           TOKEN: ${{ secrets.REGISTRY_TOKEN }}
           USER: ${{ secrets.REGISTRY_USER }}
         run: |
-          echo "${TOKEN}" | sudo podman login -u "${USER}" --password-stdin "${BUILD_REGISTRY}"
+          echo "${TOKEN}" | podman login -u "${USER}" --password-stdin "${BUILD_REGISTRY}"
           echo "${TOKEN}" | docker login -u "${USER}" --password-stdin "${BUILD_REGISTRY}" # for cosign
 
       - name: Install Cosign
@@ -62,9 +62,9 @@ jobs:
           set -x
           # HACK: push a second time so layer annotations are present
           # TODO: remove me when https://github.com/containers/podman/issues/27796 fixed
-          sudo podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
           echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
-          sudo podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
           echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
 
       - name: Sign with cosign

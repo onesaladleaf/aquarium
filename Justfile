@@ -12,11 +12,11 @@ rechunk_suffix := env("BUILD_RECHUNK_SUFFIX", "-build")
 arch := env("BUILD_ARCH", "amd64")
 
 pull *ARGS:
-    sudo podman pull {{base}}
-    sudo npodman pull {{registry}}/{{name}}:{{tag}} || true
+    podman pull {{base}}
+    podman pull {{registry}}/{{name}}:{{tag}} || true
 
 build *ARGS:
-    sudo buildah bud \
+    buildah bud \
         --layers=true \
         --skip-unused-stages=false \
         --arch="{{arch}}" \
