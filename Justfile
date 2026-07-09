@@ -22,7 +22,6 @@ build *ARGS:
         --skip-unused-stages=false \
         --arch="{{arch}}" \
         --build-arg="base={{base}}" \
-        --build-arg="CHUNKAH_CONFIG_STR=$(podman inspect {{registry}}/{{name}}:{{tag}})" \
         {{ARGS}} \
         -t "{{registry}}/{{name}}:{{tag}}" \
         "."
