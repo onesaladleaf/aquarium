@@ -34,6 +34,7 @@ RUN --mount=from=builder,src=/,target=/chunkah,ro \
         --label ostree.commit- \
         --label ostree.final-diffid- \
         --max-layers=128 \
-        --output oci:/run/src/out
+        --output oci:/run/src/out && \
+    ls -la /run/src/out
 
 FROM oci:out
