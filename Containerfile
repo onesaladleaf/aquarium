@@ -27,8 +27,8 @@ RUN bootc container lint --no-truncate
 
 FROM quay.io/coreos/chunkah AS chunkah
 ARG CHUNKAH_CONFIG_STR
-RUN --mount=type=bind,target=/run/src,rw \
-    --mount=from=builder,target=/chunkah,ro \
+RUN --mount=from=builder,src=/,target=/chunkah,ro \
+    --mount=type=bind,target=/run/src,rw \
     chunkah build \
         --prune /sysroot/ \
         --label ostree.commit- \
