@@ -13,6 +13,7 @@ arch := env("BUILD_ARCH", "amd64")
 
 pull *ARGS:
     podman pull {{base}}
+    podman pull quay.io/coreos/chunkah
     podman pull {{registry}}/{{name}}:{{tag}} || true
 
 build *ARGS:
