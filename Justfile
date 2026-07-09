@@ -11,11 +11,21 @@ base := env("BUILD_BASE", "quay.io/fedora/fedora-silverblue:" + branch)
 rechunk_suffix := env("BUILD_RECHUNK_SUFFIX", "-build")
 arch := env("BUILD_ARCH", "amd64")
 
-pull *ARGS:
-    podman pull {{base}}
-    podman pull quay.io/coreos/chunkah
-    podman pull {{registry}}/{{name}}:44
-    podman pull {{registry}}/{{name}}:{{tag}} || true
+[private]
+pull-base *ARGS:
+    podman pull {{ARGS}} {{base}}
+
+[private]
+pull-chunkah *ARGS:
+    podman pull {{ARGS}} quay.io/coreos/chunkah
+
+[private]
+pull-img *ARGS:
+    podman pull {{ARGS}} {{registry}}/{{name}}:44
+    podman pull {{ARGS}} {{registry}}/{{name}}:{{tag}} || true
+
+[parallel]
+pull *ARGS: (pull-base ARGS) (pull-chunkah ARGS) (pull-img ARGS)
 
 build *ARGS:
     buildah bud \
