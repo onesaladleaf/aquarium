@@ -18,10 +18,12 @@ pull *ARGS:
 build *ARGS:
     sudo buildah bud \
         --layers=true \
+        --skip-unused-stages=false \
         --arch="{{arch}}" \
         --build-arg="base={{base}}" \
+        --build-arg="CHUNKAH_CONFIG_STR=$(podman inspect {{registry}}/{{name}}:{{tag}})" \
         {{ARGS}} \
-        -t "{{registry}}/{{name}}:{{tag}}{{rechunk_suffix}}" \
+        -t "{{registry}}/{{name}}:{{tag}}" \
         "."
 
 rechunk *ARGS:
