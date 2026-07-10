@@ -21,8 +21,7 @@ pull-chunkah *ARGS:
 
 [private]
 pull-img *ARGS:
-    podman pull {{ARGS}} {{registry}}/{{name}}:44
-    podman pull {{ARGS}} {{registry}}/{{name}}:{{tag}} || true
+    podman pull {{ARGS}} {{registry}}/{{name}}:{{tag}}
 
 [parallel]
 pull *ARGS: (pull-base ARGS) (pull-chunkah ARGS) (pull-img ARGS)
@@ -33,7 +32,7 @@ build *ARGS:
         --skip-unused-stages=false \
         --arch="{{arch}}" \
         --build-arg="base={{base}}" \
-        --build-arg="CHUNKAH_CONFIG_STR=$(podman inspect {{registry}}/{{name}}:44)" \
+        --build-arg="CHUNKAH_CONFIG_STR=$(podman inspect {{registry}}/{{name}}:{{tag}})" \
         -v=$(pwd):/run/src \
         --security-opt=label=disable \
         {{ARGS}} \
