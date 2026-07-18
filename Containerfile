@@ -33,7 +33,7 @@ RUN --mount=from=builder,src=/,target=/chunkah,ro \
         --prune /sysroot/ \
         --label ostree.commit- \
         --label ostree.final-diffid- \
-        --max-layers=128 \
+        --max-layers=256 \
         --output oci:/run/src/out
 
 FROM oci:out
