@@ -54,9 +54,9 @@ jobs:
           set -x
           # HACK: push a second time so layer annotations are present
           # TODO: remove me when https://github.com/containers/podman/issues/27796 fixed
-          podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          podman push --compression-format=zstd --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
           echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
-          podman push --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
+          podman push --compression-format=zstd --digestfile=/tmp/digestfile "$REGISTRY/$IMAGE:$TAG"
           echo "digest=$(< /tmp/digestfile)" | tee "${GITHUB_OUTPUT}"
 
       - name: Sign with cosign
