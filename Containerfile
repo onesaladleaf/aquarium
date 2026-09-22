@@ -30,6 +30,8 @@ ARG CHUNKAH_CONFIG_STR
 RUN --mount=from=builder,src=/,target=/chunkah,ro \
     --mount=type=bind,target=/run/src,rw \
     chunkah build \
+        --verbose \
+        --label org.opencontainers.image.created="$(date -u +%Y\-%m\-%d\T%H\:%M\:%S\Z)" \
         --prune /sysroot/ \
         --label ostree.commit- \
         --label ostree.final-diffid- \
