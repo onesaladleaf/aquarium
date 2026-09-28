@@ -1,0 +1,8 @@
+[Unit]
+Description=Download and stage bootc updates
+Documentation=man:bootc(8)
+ConditionPathExists=/run/ostree-booted
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bootc upgrade --quiet

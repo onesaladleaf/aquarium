@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -xeuo pipefail
+
+install -Dm644 bootc-fetch-stage-updates.service -t /usr/lib/systemd/system
+install -Dm644 bootc-fetch-stage-updates.timer -t /usr/lib/systemd/system
+
+systemctl enable bootc-fetch-stage-updates.timer
+
+# disable stock auto-update services
+systemctl disable bootc-fetch-apply-updates.timer
+systemctl mask bootc-fetch-apply-updates.timer
+systemctl disable rpm-ostreed-automatic.timer
+systemctl mask rpm-ostreed-automatic.timer
