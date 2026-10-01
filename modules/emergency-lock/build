@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
-install -Dm644 10-emergency-lock.rules -t /usr/lib/udev/rules.d
-install -Dm755 emergency-lock-on-add /usr/bin
-install -Dm755 emergency-lock-on-remove /usr/bin
+set -xeuo pipefail
+
+TARGET=$1
+
+install -Dm644 10-emergency-lock.rules -t ${TARGET}/usr/lib/udev/rules.d
+install -Dm755 emergency-lock-on-add -t ${TARGET}/usr/bin
+install -Dm755 emergency-lock-on-remove -t ${TARGET}/usr/bin

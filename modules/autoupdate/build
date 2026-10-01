@@ -2,8 +2,10 @@
 
 set -xeuo pipefail
 
-install -Dm644 bootc-fetch-stage-updates.service -t /usr/lib/systemd/system
-install -Dm644 bootc-fetch-stage-updates.timer -t /usr/lib/systemd/system
+TARGET=$1
+
+install -Dm644 bootc-fetch-stage-updates.service -t ${TARGET}/usr/lib/systemd/system
+install -Dm644 bootc-fetch-stage-updates.timer -t ${TARGET}/usr/lib/systemd/system
 
 systemctl enable bootc-fetch-stage-updates.timer
 

@@ -12,7 +12,7 @@ dnf -y install "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release
 
 # modules
 for m in /ctx/modules/*/ ; do
-    env --chdir="$m" ./build
+    env --chdir="$m" ./build ""
 done
 
 # GUI apps

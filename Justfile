@@ -39,5 +39,17 @@ build *ARGS:
         -t "{{registry}}/{{name}}:{{tag}}" \
         "."
 
+# build a sysext out of a simple module
+sysext-build module:
+    mkdir -p sysexts
+    rm -rf sysexts/{{module}}
+    env --chdir="modules/{{module}}" ./build "$(pwd)/sysexts/{{module}}"
+    mkdir -p sysexts/{{module}}/usr/lib/extension-release.d
+    echo ID=_any > sysexts/{{module}}/usr/lib/extension-release.d/extension-release.{{module}}
+
+sysext-install module:
+    rm -rf "/var/lib/extensions/{{module}}"
+    sudo cp -a "sysexts/{{module}}" "/var/lib/extensions/{{module}}"
+
 sign digest:
     cosign sign -y --new-bundle-format=false --use-signing-config=false --key env://SIGNING_KEY "{{registry}}/{{name}}@{{digest}}"
