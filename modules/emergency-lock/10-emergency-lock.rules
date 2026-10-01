@@ -1,0 +1,2 @@
+ATTRS{idVendor}=="13fe", ATTRS{idProduct}=="1d00", ACTION=="add", RUN+="/usr/bin/emergency-lock-on-add"
+ATTRS{idVendor}=="13fe", ATTRS{idProduct}=="1d00", ACTION=="remove", RUN+="/usr/bin/emergency-lock-on-remove"
