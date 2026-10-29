@@ -1,6 +1,6 @@
 set dotenv-load
 
-branch := env("BUILD_BRANCH", "44")
+branch := env("BUILD_BRANCH", "45")
 tag := env("BUILD_TAG", branch)
 
 registry := env("BUILD_REGISTRY", "localhost")
