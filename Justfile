@@ -21,7 +21,8 @@ pull-chunkah *ARGS:
 
 [private]
 pull-img *ARGS:
-    podman pull {{ARGS}} {{registry}}/{{name}}:{{tag}}
+    podman pull {{ARGS}} {{registry}}/{{name}}:44
+    podman tag {{ARGS}} {{registry}}/{{name}}:44 {{registry}}/{{name}}:{{tag}}
 
 [parallel]
 pull *ARGS: (pull-base ARGS) (pull-chunkah ARGS) (pull-img ARGS)
